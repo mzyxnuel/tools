@@ -41,7 +41,7 @@ if [[ ! -d "$SOURCE_DIR" ]]; then
 fi
 
 # Create destination directory if it doesn't exist
-if ! mkdir -p "$DEST_DIR"; then
+if ! mkdir -p -- "$DEST_DIR"; then
     echo "Error: Cannot create destination directory '$DEST_DIR'"
     exit 1
 fi

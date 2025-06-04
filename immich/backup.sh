@@ -2,7 +2,19 @@
 
 # Backup script with configurable source and destination
 
-# Function to display help
+# Displays usage instructions, parameter descriptions, and example commands for the backup script, then exits.
+#
+# Outputs:
+#
+# * Prints usage information, parameter details, and example invocations to STDOUT.
+#
+# Returns:
+#
+# * Exits the script with status 1 after displaying help.
+#
+# Example:
+#
+#   show_help
 show_help() {
     echo "Usage: $(basename "$0") <source_directory> <destination_directory> [backup_name]"
     echo ""

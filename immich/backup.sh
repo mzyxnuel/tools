@@ -58,7 +58,7 @@ echo "Destination: $BACKUP_FILE"
 echo ""
 
 # Create the backup
-if tar -czvf "$BACKUP_FILE" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")"; then
+if tar -czf "$BACKUP_FILE" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")"; then
     echo ""
     echo "Backup completed successfully!"
     echo "Backup saved to: $BACKUP_FILE"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Backup script with configurable source and destination
+set -euo pipefail
 
 # Function to display help
 show_help() {
@@ -22,16 +22,9 @@ if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     show_help
 fi
 
-# Check if minimum required parameters are provided
-if [[ $# -lt 2 ]]; then
-    echo "Error: Missing required parameters"
-    echo ""
-    show_help
-fi
-
 # Assign parameters
-SOURCE_DIR="$1"
-DEST_DIR="$2"
+SOURCE_DIR="${1:-immich}"
+DEST_DIR="${2:-gallery}"
 BACKUP_NAME="${3:-backup}"
 
 # Validate source directory exists
@@ -58,7 +51,7 @@ echo "Destination: $BACKUP_FILE"
 echo ""
 
 # Create the backup
-if tar -czf "$BACKUP_FILE" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")"; then
+if tar -czf -- "$BACKUP_FILE" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")"; then
     echo ""
     echo "Backup completed successfully!"
     echo "Backup saved to: $BACKUP_FILE"

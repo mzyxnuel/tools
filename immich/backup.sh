@@ -23,9 +23,8 @@ if [[ "$1" == "-h" || "$1" == "--help" ]]; then
 fi
 
 # Assign parameters
-SOURCE_DIR="${1:-immich}"
-DEST_DIR="${2:-gallery}"
-BACKUP_NAME="${3:-backup}"
+SOURCE_DIR="${1:-"/home/$USER/Documents/immich/"}"
+DEST_DIR="${2:-"/media/$USER/SEAGATE/immich/"}"
 
 # Validate source directory exists
 if [[ ! -d "$SOURCE_DIR" ]]; then
@@ -42,8 +41,15 @@ fi
 # Generate timestamp
 TIMESTAMP=$(date '+%d-%m-%Y')
 
-# Create backup filename
-BACKUP_FILE="${DEST_DIR}/${BACKUP_NAME}_${TIMESTAMP}.tar.gz"
+# Create backup filename (ensure proper path separator)
+BACKUP_FILE="${DEST_DIR%/}/${TIMESTAMP}.tar.gz"
+
+# Ensure the directory for the backup file exists
+BACKUP_DIR=$(dirname "$BACKUP_FILE")
+if ! mkdir -p -- "$BACKUP_DIR"; then
+    echo "Error: Cannot create backup directory '$BACKUP_DIR'"
+    exit 1
+fi
 
 echo "Starting backup..."
 echo "Source: $SOURCE_DIR"
@@ -51,7 +57,7 @@ echo "Destination: $BACKUP_FILE"
 echo ""
 
 # Create the backup
-if tar -czf -- "$BACKUP_FILE" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")"; then
+if tar -czf "$BACKUP_FILE" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")"; then
     echo ""
     echo "Backup completed successfully!"
     echo "Backup saved to: $BACKUP_FILE"
